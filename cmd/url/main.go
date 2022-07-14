@@ -2,10 +2,8 @@ package main
 
 import (
 	"fmt"
-	app "github.com/NautiloosGo/url_shortener/internal/app"
-	st "github.com/NautiloosGo/url_shortener/internal/storage"
-	"strconv"
-	"time"
+	app "github.com/NautiloosGo/url/internal/app"
+	st "github.com/NautiloosGo/url/internal/storage"
 )
 
 func main() {
@@ -14,6 +12,6 @@ func main() {
 	Catalog := st.LoadDB(Conf.FileCatalog)
 	fmt.Println(Conf)
 	fmt.Println(Catalog)
-	fmt.Println(fmt.Sprintf(GetRandomString(setup.Settings.Qty, setup.Settings.Letters)))
+	fmt.Println(fmt.Sprintf(app.GetRandomString(Conf.Settings.Qty, Conf.Settings.Letters)))
 
 }
