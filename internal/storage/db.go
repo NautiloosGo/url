@@ -27,3 +27,19 @@ func LoadDB(file string) Catalog {
 	jsonParser.Decode(&catalog)
 	return catalog
 }
+
+// func AutosaverDB(filedb string, n int) {
+// 	for {
+// 		<-time.After(time.Second * n)
+// 		//back in .json
+// 		rawDataOut, err := json.MarshalIndent(&Catalog, "", "  ")
+// 		if err != nil {
+// 			fmt.Println("JSON marshaling failed:", err)
+// 		}
+
+// 		err = ioutil.WriteFile(filedb, rawDataOut, 0)
+// 		if err != nil {
+// 			fmt.Println("Cannot write updated catalog file:", err)
+// 		}
+// 	}
+// }

@@ -3,8 +3,9 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	//app "github.com/NautiloosGo/url/internal/app"
+	app "github.com/NautiloosGo/url/internal/app"
 	st "github.com/NautiloosGo/url/internal/storage"
+	"io/ioutil"
 	"log"
 	"net/http"
 	"time"
@@ -20,28 +21,16 @@ type responseToClient struct {
 }
 
 func defaultFunc(w http.ResponseWriter, r *http.Request) {
-	var dataForm map[string][]string
 	var ok = "success"
-	// Идентифицируем клиентское соединение
+	// client
 	fmt.Println("client connect success ", r.RemoteAddr)
-	// Получить содержимое адресной строки
+	// request
 	fmt.Println(r.Method, r.RequestURI)
-	// Получить содержимое заголовка запроса
-	// for k, v := range r.Header {
-	// 	fmt.Println(k, v[0])
-	// }
 	data := make(map[string]string)
-	if err := r.ParseForm(); err == nil {
-		if r.Form != nil {
-			dataForm = r.Form
-		}
-	}
-	// Читаем содержимое клиента
+	// read
 	buf := make([]byte, 2048)
 	n, _ := r.Body.Read(buf)
-	// Получить содержимое в теле запроса
-	fmt.Println("receive data from body", string(buf[:n]))
-
+	// operating
 	if r.Method == "GET" {
 		r.ParseForm()
 		for k, v := range r.Form {
@@ -52,66 +41,116 @@ func defaultFunc(w http.ResponseWriter, r *http.Request) {
 					break
 				} else {
 					data["url"] = ""
-					ok = "unsuccess"
+					data["short_url"] = v[0]
+					ok = "not found"
 				}
 
 			}
 
 		}
 	}
-	// Обработка запросов POST и PUT, отправленных клиентом
-	if r.Method == "POST" || r.Method == "PUT" {
-		ct, ok := r.Header["Content-Type"]
-		if ok {
-			// Если это данные json, судите по заголовку запроса
+
+	if r.Method == "POST" {
+		ct, k := r.Header["Content-Type"]
+		if k {
+			// check for json
 			if ct[0] == "application/json" {
 				json.Unmarshal(buf[:n], &data)
 			}
-			// Если это данные формы POST
-			if ct[0] == "application/x-www-form-urlencoded" {
-				if dataForm != nil {
-					for k, v := range dataForm {
-						data[k] = v[0]
-					}
-				}
+		} else {
+			r.ParseForm()
+			for w, v := range r.Form {
+				data[w] = v[0]
 			}
 		}
+		url, k := data["url"]
+		if k {
+			surl, found := FindUrl(url)
+			if found == true {
+				data["short_url"] = surl
+				ok = "short URL already exists"
+			} else {
+				surl = app.GetRandomString(Conf.Settings.Qty, Conf.Settings.Letters)
+				_, found := FindUrl(surl)
+				for found == true {
+					surl = app.GetRandomString(Conf.Settings.Qty, Conf.Settings.Letters)
+					_, found = FindUrl(surl)
+				}
+				AddLink(url, surl)
+				data["short_url"] = surl
+				ok = "done"
+			}
+		}
+
 	}
-	// Обработка запроса DELETE клиента
-	// Запись текущего времени `2006-01-02 15: 04: 05` относится к формату формата
-	data["time"] = time.Now().Format("2006-01-02 15:04:05")
+	// sending
 	m := responseToClient{200, ok, data}
 	mjson, e := json.Marshal(m)
 	if e != nil {
 		fmt.Println(e)
 	}
-	// ответить клиенту в формате json
 	fmt.Fprintf(w, "%v\n", string(mjson))
 }
-func main() {
-	Start()
 
-	http.HandleFunc("/", defaultFunc)
-	if err := http.ListenAndServe(":8080", nil); err != nil {
-		log.Fatal("ListenAndServer: ", err)
-	}
-}
-
-func Start() {
-	Conf = st.LoadConfiguration("./config.json")
+func UploadCatalog() {
 	Catalog = st.LoadDB(Conf.FileCatalog)
-	fmt.Println("Configuration: ", Conf)
-	fmt.Println("Catalog: ", Catalog)
-	//fmt.Println(fmt.Sprintf(app.GetRandomString(Conf.Settings.Qty, Conf.Settings.Letters)))
-
+	fmt.Println("Success: Catalog from ", Conf.FileCatalog)
 }
 
 func FindSurl(url string) (string, bool) {
-	fmt.Println("get", url)
 	for _, c := range Catalog.List {
 		if c.Surl == url {
 			return c.Url, true
 		}
 	}
 	return "", false
+}
+
+func FindUrl(url string) (string, bool) {
+	for _, c := range Catalog.List {
+		if c.Url == url {
+			return c.Surl, true
+		}
+	}
+	return "", false
+}
+
+func AddLink(url, surl string) {
+	req := st.Request{
+		Id:   "",
+		Url:  url,
+		Surl: surl,
+	}
+	Catalog.List = append(Catalog.List, req)
+}
+
+func AutosaverDB(filedb string, n time.Duration) {
+	for {
+		<-time.After(n)
+		//back in .json
+		rawDataOut, err := json.MarshalIndent(&Catalog, "", "  ")
+		if err != nil {
+			fmt.Println("JSON marshaling failed:", err)
+		}
+
+		err = ioutil.WriteFile(filedb, rawDataOut, 0)
+		if err != nil {
+			fmt.Println("Cannot write updated catalog file:", err)
+		}
+	}
+}
+
+func main() {
+	//get config
+	Conf = st.LoadConfiguration("./config.json")
+	fmt.Println("Configs uploaded")
+	//get local db (json)
+	UploadCatalog()
+	//autosave every n seconds
+	go AutosaverDB(Conf.FileCatalog, time.Second*5)
+	//start server
+	http.HandleFunc("/", defaultFunc)
+	if err := http.ListenAndServe(":8080", nil); err != nil {
+		log.Fatal("ListenAndServer: ", err)
+	}
 }
