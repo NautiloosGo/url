@@ -3,7 +3,9 @@ package storage
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"os"
+	"time"
 )
 
 func LoadConfiguration(file string) Config {
@@ -17,7 +19,7 @@ func LoadConfiguration(file string) Config {
 	return config
 }
 
-func LoadDB(file string) Catalog {
+func UploadCatalog(file string) Catalog {
 	var catalog Catalog
 	readFile, err := os.Open(file)
 	if err != nil {
@@ -25,21 +27,22 @@ func LoadDB(file string) Catalog {
 	}
 	jsonParser := json.NewDecoder(readFile)
 	jsonParser.Decode(&catalog)
+	fmt.Println("Success: Catalog from ", file)
 	return catalog
 }
 
-// func AutosaverDB(filedb string, n int) {
-// 	for {
-// 		<-time.After(time.Second * n)
-// 		//back in .json
-// 		rawDataOut, err := json.MarshalIndent(&Catalog, "", "  ")
-// 		if err != nil {
-// 			fmt.Println("JSON marshaling failed:", err)
-// 		}
+func AutosaverDB(c Catalog, filedb string, n time.Duration) {
+	for {
+		<-time.After(n)
+		//back in .json
+		rawDataOut, err := json.MarshalIndent(&c, "", "  ")
+		if err != nil {
+			fmt.Println("JSON marshaling failed:", err)
+		}
 
-// 		err = ioutil.WriteFile(filedb, rawDataOut, 0)
-// 		if err != nil {
-// 			fmt.Println("Cannot write updated catalog file:", err)
-// 		}
-// 	}
-// }
+		err = ioutil.WriteFile(filedb, rawDataOut, 0)
+		if err != nil {
+			fmt.Println("Cannot write updated catalog file:", err)
+		}
+	}
+}

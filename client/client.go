@@ -110,13 +110,17 @@ func PostJson(url string) {
 }
 
 func main() {
-	// url := "testurl/testurl/testurl/testurl/testurl"
-	// surl := "abc123123d"
-
+	// get urls from .json
 	db := LoadURLFromDB(filedb)
-	for _, url := range db.List {
-		Post(url)
-		PostJson(url)
+	for i, url := range db.List {
+		switch i % 2 {
+		case 0:
+			Post(url)
+			PostJson(url)
+		case 1:
+			PostJson(url)
+			Post(url)
+		}
 	}
 	for _, surl := range db.Listshort {
 		Get(surl)
