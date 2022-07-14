@@ -1,0 +1,16 @@
+{
+    "settings": {
+    "letters": "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_",
+    "url_len": 10
+    },
+
+    "local_database": "./catalog.json",
+
+    "database": {
+    "host": "localhost",
+    "password": "12345"
+    },
+
+    "host": "localhost",
+    "port": "8080"
+    }
