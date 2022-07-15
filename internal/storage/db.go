@@ -53,14 +53,8 @@ func UploadCatalog(file string) Catalog {
 		if err := f.Close(); err != nil {
 			fmt.Println(err)
 		}
-		// in case catalog.json was deleted
-		// var r = Request{
-		// 	Id:   "0",
-		// 	Url:  "0",
-		// 	Surl: "0",
-		// }
+
 		catalog = emptyCatalog
-		// catalog.List = append(catalog.List, r)
 		return catalog
 	}
 	defer catalogFile.Close()
@@ -76,7 +70,6 @@ func AutosaverDB(c *Catalog, n time.Duration) {
 	for {
 		<-time.After(n)
 		//back in .json
-		//c := GetCatalog()
 		rawDataOut, err := json.MarshalIndent(&c, "", "  ")
 		if err != nil {
 			fmt.Println("JSON marshaling failed:", err)
