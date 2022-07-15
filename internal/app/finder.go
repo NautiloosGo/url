@@ -21,12 +21,3 @@ func FindUrl(cat st.Catalog, url string) (string, bool) {
 	}
 	return "", false
 }
-
-func AddLink(cat st.Catalog, url, surl string) {
-	req := st.Request{
-		Id:   "",
-		Url:  url,
-		Surl: surl,
-	}
-	cat.List = append(cat.List, req)
-}

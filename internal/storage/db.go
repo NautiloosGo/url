@@ -14,6 +14,7 @@ func LoadConfiguration(file string) Config {
 	if err != nil {
 		fmt.Println(err.Error())
 	}
+	defer configFile.Close()
 	jsonParser := json.NewDecoder(configFile)
 	jsonParser.Decode(&config)
 	return config
@@ -21,11 +22,12 @@ func LoadConfiguration(file string) Config {
 
 func UploadCatalog(file string) Catalog {
 	var catalog Catalog
-	readFile, err := os.Open(file)
+	catalogFile, err := os.Open(file)
 	if err != nil {
 		fmt.Println(err.Error())
 	}
-	jsonParser := json.NewDecoder(readFile)
+	defer catalogFile.Close()
+	jsonParser := json.NewDecoder(catalogFile)
 	jsonParser.Decode(&catalog)
 	fmt.Println("Success: Catalog from ", file)
 	return catalog
