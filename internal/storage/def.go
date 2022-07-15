@@ -17,9 +17,6 @@ type Config struct {
 		Qty     int    `json:"url_len"`
 	} `json:"settings"`
 	FileCatalog string `json:"local_database"`
-
-	Host string `json:"host"`
-	Port string `json:"port"`
 }
 
 type Catalog struct {

@@ -4,8 +4,5 @@
     "url_len": 10
     },
 
-    "local_database": "./catalog.json",
-
-    "host": "localhost",
-    "port": "8080"
+    "local_database": "./catalog.json"
     }
