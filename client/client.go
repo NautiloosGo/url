@@ -37,7 +37,6 @@ func Get(surl string) {
 	if err != nil {
 		log.Println(err)
 	}
-	request.Header.Add("client", "T")
 	params := request.URL.Query()
 	params.Add("url", "")
 	params.Add("short_url", surl)
@@ -63,7 +62,6 @@ func Post(url string) {
 	if err != nil {
 		log.Println(err)
 	}
-	request.Header.Add("client", "T")
 	params := request.URL.Query()
 	params.Add("url", url)
 	params.Add("short_url", "")

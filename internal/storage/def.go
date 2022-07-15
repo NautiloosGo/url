@@ -22,3 +22,21 @@ type Config struct {
 type Catalog struct {
 	List []Request `json:"links"`
 }
+
+// in case of config.json was deleted
+var defaultConfig = Config{
+	Settings: struct {
+		Letters string `json:"letters"`
+		Qty     int    `json:"url_len"`
+	}{
+		Letters: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_",
+		Qty:     10,
+	},
+	FileCatalog: "./catalog.json",
+}
+
+// in case of catalog.json was deleted
+var emptyCatalog = Catalog{
+	List: make([]Request, 0)}
+
+var confFileAdr = "./config.json"

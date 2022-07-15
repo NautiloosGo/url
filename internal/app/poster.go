@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	st "github.com/NautiloosGo/url/internal/storage"
 )
 
@@ -30,5 +31,7 @@ func PostUniq(data st.Request) (st.Request, string) {
 }
 
 func AddLink(data st.Request) {
+	fmt.Println("!!!! ", data)
 	Catalog.List = append(Catalog.List, data)
+	fmt.Println("!!!! ", Catalog.List)
 }
