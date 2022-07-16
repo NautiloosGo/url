@@ -1,7 +1,6 @@
 package app
 
 import (
-	app "github.com/NautiloosGo/url/internal/app"
 	"strings"
 	"testing"
 )
@@ -20,7 +19,7 @@ func TestGetRandomString(t *testing.T) {
 		}
 		for _, lib := range list {
 			// Act
-			answer := app.GetRandomString(n, lib)
+			answer := GetRandomString(n, lib)
 			// Assert
 			if answerQty := len(answer); answerQty != n {
 				t.Fatalf("%q:\nWrong len, want %d, get %d", t.Name(), n, answerQty)

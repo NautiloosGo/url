@@ -1,7 +1,6 @@
 package app
 
 import (
-	"fmt"
 	st "github.com/NautiloosGo/url/internal/storage"
 )
 
@@ -20,7 +19,7 @@ func Post(data st.Request) (st.Request, string) {
 }
 
 func PostUniq(data st.Request) (st.Request, string) {
-	surl := GetRandomString(Conf.Settings.Qty, Conf.Settings.Letters)
+	surl := GetRandomStringFaster(Conf.Settings.Qty, Conf.Settings.Letters)
 	if _, found := FindSurl(Catalog, surl); found {
 		return PostUniq(data)
 	} else {
@@ -31,7 +30,5 @@ func PostUniq(data st.Request) (st.Request, string) {
 }
 
 func AddLink(data st.Request) {
-	fmt.Println("!!!! ", data)
 	Catalog.List = append(Catalog.List, data)
-	fmt.Println("!!!! ", Catalog.List)
 }

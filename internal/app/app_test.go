@@ -1,7 +1,6 @@
 package app
 
 import (
-	app "github.com/NautiloosGo/url/internal/app"
 	st "github.com/NautiloosGo/url/internal/storage"
 	"testing"
 )
@@ -51,7 +50,7 @@ func TestFindSurlTrue(t *testing.T) {
 	ok := make([]bool, len(lista))
 	tCatalog := createCat()
 	for i, u := range lista {
-		listans[i], ok[i] = app.FindSurl(tCatalog, u)
+		listans[i], ok[i] = FindSurl(tCatalog, u)
 	}
 	// Assert
 	for j, surl := range listans {
@@ -82,7 +81,7 @@ func TestFindSurlFalse(t *testing.T) {
 	ok := make([]bool, len(lista))
 	tCatalog := createCat()
 	for i, u := range lista {
-		listans[i], ok[i] = app.FindSurl(tCatalog, u)
+		listans[i], ok[i] = FindSurl(tCatalog, u)
 	}
 	// Assert
 	for j, _ := range listans {
@@ -121,7 +120,7 @@ func TestFindUrlTrue(t *testing.T) {
 	ok := make([]bool, len(lista))
 	tCatalog := createCat()
 	for i, u := range lista {
-		listans[i], ok[i] = app.FindUrl(tCatalog, u)
+		listans[i], ok[i] = FindUrl(tCatalog, u)
 	}
 	// Assert
 	for j, surl := range listans {
@@ -152,7 +151,7 @@ func TestFindUrlFalse(t *testing.T) {
 	ok := make([]bool, len(lista))
 	tCatalog := createCat()
 	for i, u := range lista {
-		listans[i], ok[i] = app.FindSurl(tCatalog, u)
+		listans[i], ok[i] = FindSurl(tCatalog, u)
 	}
 	// Assert
 	for j, _ := range listans {
