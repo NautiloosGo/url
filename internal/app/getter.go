@@ -1,11 +1,17 @@
 package app
 
 import (
+	"fmt"
 	st "github.com/NautiloosGo/url/internal/storage"
 )
 
 func Get(data st.Request) (st.Request, string) {
 	if data.Surl != "" {
+		for _, s := range data.Surl {
+			if s <= 31 || s >= 127 {
+				return data, fmt.Sprintf("Error: wrong symbol %s", string(s))
+			}
+		}
 		url, found := FindSurl(Catalog, data.Surl)
 		if found {
 			data.Url = url

@@ -74,8 +74,6 @@ func TestFindSurlFalse(t *testing.T) {
 		"2111111114",
 	}
 
-	//listb := make([]string, len(lista))
-
 	// Act
 	listans := make([]string, len(lista))
 	ok := make([]bool, len(lista))
