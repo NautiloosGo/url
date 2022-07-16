@@ -8,6 +8,7 @@ import (
 var Conf st.Config
 var Catalog st.Catalog
 
+// upload configurations and catalog
 func Initial() error {
 	//get config
 	Conf = st.LoadConfiguration(st.GetConfAdr())
@@ -16,9 +17,11 @@ func Initial() error {
 	Catalog = st.UploadCatalog(Conf.FileCatalog)
 	return nil
 }
+
 func GetCatalog() *st.Catalog {
 	return &Catalog
 }
+
 func GetSaveTimer() int {
 	return Conf.AutosaveTimer
 }

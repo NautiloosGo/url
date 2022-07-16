@@ -4,6 +4,7 @@ import (
 	st "github.com/NautiloosGo/url/internal/storage"
 )
 
+// find duplicates in catalog
 func Post(data st.Request) (st.Request, string) {
 	if data.Url != "" {
 		surl, found := FindUrl(Catalog, data.Url)
@@ -18,9 +19,12 @@ func Post(data st.Request) (st.Request, string) {
 	}
 }
 
+// create short url and check for duplicates
 func PostUniq(data st.Request) (st.Request, string) {
+	// get random string
 	surl := GetRandomStringFaster(Conf.Settings.Qty, Conf.Settings.Letters)
 	if _, found := FindSurl(Catalog, surl); found {
+		// repeat till create uniq short url
 		return PostUniq(data)
 	} else {
 		data.Surl = surl
@@ -29,6 +33,7 @@ func PostUniq(data st.Request) (st.Request, string) {
 	}
 }
 
+// add new url and short url in catalog
 func AddLink(data st.Request) {
 	Catalog.List = append(Catalog.List, data)
 }

@@ -16,15 +16,13 @@ type responseToClient struct {
 	Data    map[string]string `json:"data"`
 }
 
+// operates requests
 func defaultFunc(w http.ResponseWriter, r *http.Request) {
 	var ok = "success"
-	// client
 	fmt.Println("client connect success ", r.RemoteAddr)
-	// request
 	fmt.Println(r.Method, r.RequestURI)
 	data := make(map[string]string)
-	// read
-	//check header
+	//check header for content type
 	ct, k := r.Header["Content-Type"]
 	if k {
 		// check for json
@@ -33,27 +31,15 @@ func defaultFunc(w http.ResponseWriter, r *http.Request) {
 			n, _ := r.Body.Read(buf)
 			json.Unmarshal(buf[:n], &data)
 		}
-		// todo other types
 	} else {
+		// simple form
 		r.ParseForm()
 		for w, v := range r.Form {
 			data[w] = v[0]
 		}
 	}
 	var NewLink = st.Request{}
-	// simple request
-	if data["get"] != "" {
-		NewLink.Url = ""
-		NewLink.Surl = data["get"]
-		NewLink, ok = app.Get(NewLink)
-		fmt.Fprintf(w, NewLink.Url)
-	}
-	if data["post"] != "" {
-		NewLink.Url = data["post"]
-		NewLink.Surl = ""
-		NewLink, ok = app.Post(NewLink)
-		fmt.Fprintf(w, NewLink.Surl)
-	}
+
 	// form/json request
 	if data["url"] != "" || data["short_url"] != "" {
 		NewLink.Url = data["url"]
@@ -71,8 +57,22 @@ func defaultFunc(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "%v\n", string(mjson))
 
 	}
+	// in case "get"&"post" in param
+	if data["get"] != "" {
+		NewLink.Url = ""
+		NewLink.Surl = data["get"]
+		NewLink, ok = app.Get(NewLink)
+		fmt.Fprintf(w, NewLink.Url)
+	}
+	if data["post"] != "" {
+		NewLink.Url = data["post"]
+		NewLink.Surl = ""
+		NewLink, ok = app.Post(NewLink)
+		fmt.Fprintf(w, NewLink.Surl)
+	}
 }
 
+// switcher
 func MetodSwitcher(req st.Request, r *http.Request) (st.Request, string) {
 	if r.Method == "GET" {
 		return app.Get(req)
@@ -83,6 +83,7 @@ func MetodSwitcher(req st.Request, r *http.Request) (st.Request, string) {
 	return req, "unknown Method"
 }
 
+// start router and listener
 func StartServe() {
 	//default
 	http.HandleFunc("/", defaultFunc)
@@ -90,5 +91,4 @@ func StartServe() {
 	if err := http.ListenAndServe("localhost:8080", nil); err != nil {
 		log.Fatal("ListenAndServer: ", err)
 	}
-
 }

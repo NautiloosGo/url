@@ -4,21 +4,17 @@ import (
 	"math/rand"
 	"strings"
 	"time"
-	//"unsafe"
 )
 
 const (
-	letterIdxBits = 6                    // 6 bits to represent a letter index
-	letterIdxMask = 1<<letterIdxBits - 1 // All 1-bits, as many as letterIdxBits
-	letterIdxMax  = 63 / letterIdxBits   // # of letter indices fitting in 63 bits
+	letterIdxBits = 6
+	letterIdxMask = 1<<letterIdxBits - 1
+	letterIdxMax  = 63 / letterIdxBits
 )
 
 var src = rand.NewSource(time.Now().UnixNano())
 
-// func (b *Builder) String() string {
-// 	return *(*string)(unsafe.Pointer(&b.buf))
-// }
-
+// random optimisation
 func GetRandomStringFaster(n int, letters string) string {
 	sb := strings.Builder{}
 	sb.Grow(n)
@@ -33,10 +29,10 @@ func GetRandomStringFaster(n int, letters string) string {
 		cache >>= letterIdxBits
 		remain--
 	}
-
 	return sb.String()
 }
 
+// simple random
 func GetRandomString(n int, letters string) string {
 	b := make([]byte, n)
 	for i := range b {

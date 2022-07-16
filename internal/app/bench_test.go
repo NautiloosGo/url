@@ -6,6 +6,7 @@ import (
 
 const letters = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_"
 
+// compare random func
 func benchGet(n int, b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		GetRandomString(n, letters)

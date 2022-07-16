@@ -23,8 +23,6 @@ var tReq = st.Request{
 
 func TestFindSurlTrue(t *testing.T) {
 	//Arrange
-	goalOK := true
-
 	lista := []string{
 		"0123456789",
 		"ABCDEFGHIJ",
@@ -44,6 +42,8 @@ func TestFindSurlTrue(t *testing.T) {
 		`{|}~¡¢£¤¥¦§¨©ª«¬­®¯°±²³´µ¶·¸¹º»¼½¾¿`,
 		`ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽžſƀƁƂƃƄƅƆƇƈƉƊƋƌƍƎƏƐƑƒƓƔƕƖƗƘƙƚƛƜƝƞƟƠơƢƣƤƥƦƧƨƩƪƫƬƭƮƯưƱƲƳƴƵƶƷƸƹƺƻƼƽƾƿǀǁǂǃǄǅǆǇǈǉǊǋǌǍǎǏǐǑǒǓǔǕǖǗǘǙǚǛǜǝǞǟǠǡǢǣǤǥǦǧǨǩǪǫǬǭǮǯǰǱǲǳǴǵǶǷǸǹǺǻǼǽǾǿȀȁȂȃȄȅȆȇȈȉȊȋȌȍȎȏȐȑȒȓȔȕȖȗȘșȚțȜȝȞȟȠȡȢȣȤȥȦȧȨȩȪȫȬȭȮȯȰȱȲȳȴȵȶȷȸȹȺȻȼȽȾȿɀɁɂɃɄɅɆɇɈɉɊɋɌɍɎɏɐɑɒɓɔɕɖɗɘəɚɛɜɝɞɟɠɡɢɣɤɥɦɧɨɩɪɫɬɭɮɯɰɱɲɳɴɵɶɷɸɹɺɻɼɽɾɿʀʁʂʃʄʅʆʇʈʉʊʋʌʍʎʏʐʑʒʓʔʕʖʗʘʙʚʛʜʝʞʟʠʡʢʣʤʥʦʧʨʩʪʫʬʭʮ`,
 	}
+
+	goalOK := true
 
 	// Act
 	listans := make([]string, len(lista))
@@ -62,7 +62,6 @@ func TestFindSurlTrue(t *testing.T) {
 
 func TestFindSurlFalse(t *testing.T) {
 	//Arrange
-	goalOK := false
 
 	lista := []string{
 		"4043456789",
@@ -73,6 +72,8 @@ func TestFindSurlFalse(t *testing.T) {
 		"2111111113",
 		"2111111114",
 	}
+
+	goalOK := false
 
 	// Act
 	listans := make([]string, len(lista))
@@ -91,7 +92,6 @@ func TestFindSurlFalse(t *testing.T) {
 
 func TestFindUrlTrue(t *testing.T) {
 	//Arrange
-	goalOK := true
 
 	lista := []string{
 		"1234567890",
@@ -113,6 +113,8 @@ func TestFindUrlTrue(t *testing.T) {
 		"1111111114",
 	}
 
+	goalOK := true
+
 	// Act
 	listans := make([]string, len(lista))
 	ok := make([]bool, len(lista))
@@ -130,7 +132,6 @@ func TestFindUrlTrue(t *testing.T) {
 
 func TestFindUrlFalse(t *testing.T) {
 	//Arrange
-	goalOK := false
 
 	lista := []string{
 		"0000000000",
@@ -142,7 +143,7 @@ func TestFindUrlFalse(t *testing.T) {
 		`ÀÀÀÀÀÀÀÀÀÀÀÊËÌÍÎÏÐÑÒÓÔÕÖ×ØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõö÷øùúûüýþÿĀāĂăĄąĆćĈĉĊċČčĎďĐđĒēĔĕĖėĘęĚěĜĝĞğĠġĢģĤĥĦħĨĩĪīĬĭĮįİıĲĳĴĵĶķĸĹĺĻļĽľĿŀŁłŃńŅņŇňŉŊŋŌōŎŏŐőŒœŔŕŖŗŘřŚśŜŝŞşŠšŢţŤťŦŧŨũŪūŬŭŮůŰűŲųŴŵŶŷŸŹźŻżŽžſƀƁƂƃƄƅƆƇƈƉƊƋƌƍƎƏƐƑƒƓƔƕƖƗƘƙƚƛƜƝƞƟƠơƢƣƤƥƦƧƨƩƪƫƬƭƮƯưƱƲƳƴƵƶƷƸƹƺƻƼƽƾƿǀǁǂǃǄǅǆǇǈǉǊǋǌǍǎǏǐǑǒǓǔǕǖǗǘǙǚǛǜǝǞǟǠǡǢǣǤǥǦǧǨǩǪǫǬǭǮǯǰǱǲǳǴǵǶǷǸǹǺǻǼǽǾǿȀȁȂȃȄȅȆȇȈȉȊȋȌȍȎȏȐȑȒȓȔȕȖȗȘșȚțȜȝȞȟȠȡȢȣȤȥȦȧȨȩȪȫȬȭȮȯȰȱȲȳȴȵȶȷȸȹȺȻȼȽȾȿɀɁɂɃɄɅɆɇɈɉɊɋɌɍɎɏɐɑɒɓɔɕɖɗɘəɚɛɜɝɞɟɠɡɢɣɤɥɦɧɨɩɪɫɬɭɮɯɰɱɲɳɴɵɶɷɸɹɺɻɼɽɾɿʀʁʂʃʄʅʆʇʈʉʊʋʌʍʎʏʐʑʒʓʔʕʖʗʘʙʚʛʜʝʞʟʠʡʢʣʤʥʦʧʨʩʪʫʬʭʮ`,
 	}
 
-	//listb := make([]string, len(lista))
+	goalOK := false
 
 	// Act
 	listans := make([]string, len(lista))
