@@ -19,3 +19,6 @@ func Initial() error {
 func GetCatalog() *st.Catalog {
 	return &Catalog
 }
+func GetSaveTimer() int {
+	return Conf.AutosaveTimer
+}

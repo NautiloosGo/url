@@ -6,7 +6,6 @@ POST
 waiting:
 Content-Type=json or simple form
 url:    originalULR
-accepts !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
 
 returns:
 Content-Type=json
@@ -23,7 +22,6 @@ GET
 waiting:
 simple form
 short_url:  URLString
-accepts !"#$%&'()*+,-./0123456789:;<=>?@ABCDEFGHIJKLMNOPQRSTUVWXYZ[\]^_`abcdefghijklmnopqrstuvwxyz{|}~
 
 returns:
 Content-Type=json
@@ -41,4 +39,6 @@ Parameters can be modified in Confir.json
     Short URL length = 10
     Symbols: 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_
 
-Database is in memory. Autosave in json file every 5 sec.
+Database is in memory. Autosave in json file every 10 sec.
+
+

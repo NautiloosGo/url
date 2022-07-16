@@ -16,7 +16,10 @@ type Config struct {
 		Letters string `json:"letters"`
 		Qty     int    `json:"url_len"`
 	} `json:"settings"`
-	FileCatalog string `json:"local_database"`
+	FileCatalog   string `json:"local_database"`
+	AutosaveTimer int    `json:"autosavetimer(ms)"`
+	Host          string `json:"host"`
+	Port          string `json:"port"`
 }
 
 type Catalog struct {
@@ -32,7 +35,10 @@ var defaultConfig = Config{
 		Letters: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_",
 		Qty:     10,
 	},
-	FileCatalog: "./catalog.json",
+	FileCatalog:   "./catalog.json",
+	AutosaveTimer: 10000,
+	Host:          "localhost",
+	Port:          "8080",
 }
 
 // in case of catalog.json was deleted

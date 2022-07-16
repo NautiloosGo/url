@@ -5,6 +5,7 @@ import (
 	"fmt"
 	app "github.com/NautiloosGo/url/internal/app"
 	st "github.com/NautiloosGo/url/internal/storage"
+	//"github.com/gorilla/mux"
 	"log"
 	"net/http"
 )
@@ -40,36 +41,54 @@ func defaultFunc(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	var NewLink = st.Request{}
-	NewLink.Url = data["url"]
-	NewLink.Surl = data["short_url"]
-
-	NewLink, ok = MetodSwitcher(NewLink, r)
-
-	// sending
-	data["url"] = NewLink.Url
-	data["short_url"] = NewLink.Surl
-	m := responseToClient{200, ok, data}
-	mjson, e := json.Marshal(m)
-	if e != nil {
-		fmt.Println(e)
+	// simple request
+	if data["get"] != "" {
+		NewLink.Url = ""
+		NewLink.Surl = data["get"]
+		NewLink, ok = app.Get(NewLink)
+		fmt.Fprintf(w, NewLink.Url)
 	}
-	fmt.Fprintf(w, "%v\n", string(mjson))
+	if data["post"] != "" {
+		NewLink.Url = data["post"]
+		NewLink.Surl = ""
+		NewLink, ok = app.Post(NewLink)
+		fmt.Fprintf(w, NewLink.Surl)
+	}
+	// form/json request
+	if data["url"] != "" || data["short_url"] != "" {
+		NewLink.Url = data["url"]
+		NewLink.Surl = data["short_url"]
+		NewLink, ok = MetodSwitcher(NewLink, r)
+
+		// sending json
+		data["url"] = NewLink.Url
+		data["short_url"] = NewLink.Surl
+		m := responseToClient{200, ok, data}
+		mjson, e := json.Marshal(m)
+		if e != nil {
+			fmt.Println(e)
+		}
+		fmt.Fprintf(w, "%v\n", string(mjson))
+
+	}
 }
 
-func MetodSwitcher(data st.Request, r *http.Request) (st.Request, string) {
+func MetodSwitcher(req st.Request, r *http.Request) (st.Request, string) {
 	if r.Method == "GET" {
-		return app.Get(data)
+		return app.Get(req)
 	}
 	if r.Method == "POST" {
-		return app.Post(data)
+		return app.Post(req)
 	}
-	return data, "unknown Method"
+	return req, "unknown Method"
 }
 
 func StartServe() {
-	//start server
+	//default
 	http.HandleFunc("/", defaultFunc)
-	if err := http.ListenAndServe(":8080", nil); err != nil {
+
+	if err := http.ListenAndServe("localhost:8080", nil); err != nil {
 		log.Fatal("ListenAndServer: ", err)
 	}
+
 }

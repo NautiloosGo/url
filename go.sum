@@ -1,2 +1,2 @@
-github.com/NautiloosGo/url_shortener v0.0.0-20220714102859-749742bc3346 h1:X+LbLEw2rnZ1NCCv8+sEPR2OJSNZmWqae43sRYdp8qU=
-github.com/NautiloosGo/url_shortener v0.0.0-20220714102859-749742bc3346/go.mod h1:bvX7dOQT8VoQRLhn7CcET7ZSpZu/WIm5k8cDHCS2k/I=
+github.com/gorilla/mux v1.8.0 h1:i40aqfkR1h2SlN9hojwV5ZA91wcXFOvkdNIeFDP5koI=
+github.com/gorilla/mux v1.8.0/go.mod h1:DVbg23sWSpFRCP0SfiEN6jmj59UnW/n46BH5rLB71So=

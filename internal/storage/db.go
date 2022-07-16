@@ -70,6 +70,7 @@ func AutosaverDB(c *Catalog, n time.Duration) {
 	for {
 		<-time.After(n)
 		//back in .json
+
 		rawDataOut, err := json.MarshalIndent(&c, "", "  ")
 		if err != nil {
 			fmt.Println("JSON marshaling failed:", err)
