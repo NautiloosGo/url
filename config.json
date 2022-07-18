@@ -3,6 +3,7 @@
     "letters": "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_",
     "url_len": 10
   },
+  "sourse_database": "local",
   "local_database": "./catalog.json",
   "autosavetimer(ms)": 10000,
   "host": "localhost",

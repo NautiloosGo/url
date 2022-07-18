@@ -7,13 +7,22 @@ import (
 // find duplicates in catalog
 func Post(data st.Request) (st.Request, string) {
 	if data.Url != "" {
-		surl, found := FindUrl(Catalog, data.Url)
-		if found {
-			data.Surl = surl
-			return data, "done. already exists"
+		if Conf.DBtype == "local" {
+			// get short url by url requested from catalog
+			surl, found := FindUrl(Catalog, data.Url)
+			if found {
+				data.Surl = surl
+				return data, "done. already exists"
+			} else {
+				return PostUniq(data)
+			}
 		} else {
-			return PostUniq(data)
+			// connect to postgres
+			req, comment := st.PostPostgres(data.Url)
+			data = req
+			return data, comment
 		}
+
 	} else {
 		return data, "requested url is empty"
 	}

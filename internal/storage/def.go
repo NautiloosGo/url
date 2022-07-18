@@ -16,6 +16,7 @@ type Config struct {
 		Letters string `json:"letters"`
 		Qty     int    `json:"url_len"`
 	} `json:"settings"`
+	DBtype        string `json:"sourse_database"`
 	FileCatalog   string `json:"local_database"`
 	AutosaveTimer int    `json:"autosavetimer(ms)"`
 	Host          string `json:"host"`
@@ -35,6 +36,7 @@ var defaultConfig = Config{
 		Letters: "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_",
 		Qty:     10,
 	},
+	DBtype:        "local",
 	FileCatalog:   "./catalog.json",
 	AutosaveTimer: 10000,
 	Host:          "localhost",

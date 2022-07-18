@@ -13,8 +13,12 @@ func Initial() error {
 	//get config
 	Conf = st.LoadConfiguration(st.GetConfAdr())
 	fmt.Println("Configs uploaded from: ", st.GetConfAdr())
-	//get local db (json)
-	Catalog = st.UploadCatalog(Conf.FileCatalog)
+	if Conf.DBtype == "local" {
+		//get local db (json)
+		Catalog = st.UploadCatalog(Conf.FileCatalog)
+	} else {
+		fmt.Println("DB not found")
+	}
 	return nil
 }
 
@@ -24,4 +28,8 @@ func GetCatalog() *st.Catalog {
 
 func GetSaveTimer() int {
 	return Conf.AutosaveTimer
+}
+
+func GetDBtype() string {
+	return Conf.DBtype
 }
